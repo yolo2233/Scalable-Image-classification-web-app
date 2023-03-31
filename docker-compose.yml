@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./FastAPIBackend
+    image: image-classification-app-back-end
+    ports:
+      - "80:80"
+    networks:
+      - my_network
+
+  requester:
+    build: ./Frontend
+    image: image-classification-app-front-end
+    ports:
+      - 8501:8501
+    networks:
+      - my_network
+
+networks:
+  my_network:
