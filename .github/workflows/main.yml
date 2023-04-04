@@ -24,4 +24,7 @@ jobs:
           ssh -i private_key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $USER_NAME@$HOSTNAME \
             'git clone https://github.com/yolo2233/Image-classification-app.git && \
             cd Image-classification-app && \
-            docker-compose up -d --build'
+            sudo docker stop $(sudo docker ps -q) && \
+            sudo docker rm $(sudo docker ps -aq) && \
+            sudo docker rmi $(sudo docker images -q) && \
+            sudo docker-compose up -d --build' 
