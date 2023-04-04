@@ -5,50 +5,24 @@ on:
     branches:
       - main
 
-jobs: 
-  # this run contains a single job called "deploy" 
+jobs:
   deploy:
-    # type of runner
+    name: Deploy to EC2 on master branch push
     runs-on: ubuntu-latest
-    
-    # steps represent a sequence of jobs
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Docker
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-
-    - name: Log in to Docker Hub
-      run: |
-        echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-
-    - name: Build and push Docker images
-      run: |
-        cd frontend
-        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/image-classification-app-frontend:latest .
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/image-classification-app-frontend:latest
-        cd ../backend
-        docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/image-classification-app-backend:latest .
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/image-classification-app-backend:latest
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2
-
-    - name: Deploy to EC2
-      run: |
-        # Replace these values with your actual AWS EC2 information
-        INSTANCE_ID=i-1234567890abcdef0
-        PRIVATE_KEY_PATH=your_private_key_path.pem
-
-        # Copy docker-compose.yml to the EC2 instance
-        scp -i $PRIVATE_KEY_PATH -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null docker-compose.yml ubuntu@ec2-123-45-67-89.compute-1.amazonaws.com:/home/ubuntu/
-
-        # Execute docker-compose on the EC2 instance
-        ssh -i $PRIVATE_KEY_PATH -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@ec2-123-45-67-89.compute-1.amazonaws.com 'docker-compose pull && docker-compose up -d'
+      - uses: actions/checkout@v2 
+      - name: Deploy in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+            HOSTNAME : ${{ secrets.HOST  }}
+            USER_NAME : ${{ secrets.USER_NAME  }}
+            
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          
+            #Now we have got the access of EC2 and we will start the deploy .
+            git clone https://github.com/yolo2233/Image-classification-app.git
+            cd Image-classification-app
+            docker-compose -f up -d --buil
