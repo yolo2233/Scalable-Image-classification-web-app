@@ -25,4 +25,4 @@ jobs:
             #Now we have got the access of EC2 and we will start the deploy .
             git clone https://github.com/yolo2233/Image-classification-app.git
             cd Image-classification-app
-            docker-compose -f up -d --buil
+            docker-compose -f up -d --buil 
