@@ -21,11 +21,34 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key.pem
           chmod 400 private_key.pem
-          ssh -i private_key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $USER_NAME@$HOSTNAME \
-            'rm -rf Image-classification-app && \
-            git clone https://github.com/yolo2233/Image-classification-app.git && \
-            cd Image-classification-app && \
-            sudo docker stop $(sudo docker ps -q) && \
-            sudo docker rm $(sudo docker ps -aq) && \
-            sudo docker rmi $(sudo docker images -q) && \
-            sudo docker-compose up -d --build' 
+          ssh -i private_key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $USER_NAME@$HOSTNAME << 'ENDSSH'
+          # Check if there are any running containers
+          RUNNING_CONTAINERS=$(sudo docker ps -q)
+          if [ ! -z "$RUNNING_CONTAINERS" ]; then
+          # Stop all running containers
+            for CONTAINER in $RUNNING_CONTAINERS; do
+              sudo docker stop $CONTAINER
+            done
+          
+            # Remove all stopped containers
+            for CONTAINER in $RUNNING_CONTAINERS; do
+              sudo docker rm $CONTAINER
+            done
+          fi
+
+          # Check if there are any images
+          IMAGES=$(sudo docker images -q)
+          if [ ! -z "$IMAGES" ]; then
+            # Remove all images
+            for IMAGE in $IMAGES; do
+              sudo docker rmi $IMAGE
+            done
+          fi
+
+          rm -rf Image-classification-app && \
+          git clone https://github.com/yolo2233/Image-classification-app.git && \
+          cd Image-classification-app && \
+          
+          sudo docker-compose build
+          sudo docker-compose up -d
+          ENDSSH
