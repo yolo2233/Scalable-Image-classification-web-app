@@ -12,16 +12,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2 
-- name: Deploy in EC2
-  env:
-      PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
-      HOSTNAME : ${{ secrets.HOST  }}
-      USER_NAME : ${{ secrets.USER_NAME  }}
-      
-  run: |
-    echo "$PRIVATE_KEY" > private_key.pem
-    chmod 400 private_key.pem
-    ssh -i private_key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $USER_NAME@$HOSTNAME \
-      'git clone https://github.com/yolo2233/Image-classification-app.git && \
-      cd Image-classification-app && \
-      docker-compose up -d --build'
+      - name: Deploy in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+            HOSTNAME : ${{ secrets.HOST  }}
+            USER_NAME : ${{ secrets.USER_NAME  }}
+            
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 400 private_key.pem
+          ssh -i private_key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $USER_NAME@$HOSTNAME \
+            'git clone https://github.com/yolo2233/Image-classification-app.git && \
+            cd Image-classification-app && \
+            docker-compose up -d --build'
