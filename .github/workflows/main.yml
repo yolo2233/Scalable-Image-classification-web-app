@@ -22,8 +22,8 @@ jobs:
           echo "$PRIVATE_KEY" > private_key.pem
           chmod 400 private_key.pem
           ssh -i private_key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $USER_NAME@$HOSTNAME \
-            rm -rf Image-classification-app && \
-            'git clone https://github.com/yolo2233/Image-classification-app.git && \
+            'rm -rf Image-classification-app && \
+            git clone https://github.com/yolo2233/Image-classification-app.git && \
             cd Image-classification-app && \
             sudo docker stop $(sudo docker ps -q) && \
             sudo docker rm $(sudo docker ps -aq) && \
