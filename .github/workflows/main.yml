@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+    path:
+      - FastAPIBackend/**
+      - Frontend/** 
+      - docker-compose.yml
 
 jobs:
   deploy:
