@@ -27,4 +27,4 @@ if uploaded_files:
 
         for img, pred in zip(uploaded_files, pred_highest_prob):
             st.image(img, caption=img.name, use_column_width=True)
-            st.write(f"Prediction: {pred[0]}   Probability: {pred[1]}")
+            st.write(f"Prediction: {pred[0]}   Confidence: {pred[1]}")
