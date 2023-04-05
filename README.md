@@ -34,7 +34,7 @@ We use Github Action to implement the CI/CD pipeline in this project. The app is
     - [ ] or Blue-gree deployment
 - Optimize CI/CD pipeline
   - [ ] Build images in Github Action Runner and push to container registry. Pull images from container registry on servers.
-  - [ ] Implement data ETL
-  - [ ] Data analysis and visualization on front-end
+- [ ] Implement data ETL
+- [ ] Data analysis and visualization on front-end
 
 
