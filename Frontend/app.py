@@ -129,19 +129,22 @@ if uploaded_file_s3:
 
 if st.session_state.upload_s3_clicked:
     if st.button("Batch predict"):
-        with st.spinner(f"Predicting {uploaded_file_s3.name} ... "):
-            response = requests.post("http://backend:80/predict-batch", json={"file_name": uploaded_file_s3.name})
+        if uploaded_file_s3:
+            with st.spinner(f"Predicting {uploaded_file_s3.name} ... "):
+                response = requests.post("http://backend:80/predict-batch", json={"file_name": uploaded_file_s3.name})
 
-            json_content = response.json()
+                json_content = response.json()
 
-            if json_content["type"] == "json":
-                # Convert JSON content to a string
-                json_string = json.dumps(json_content, indent=2)
-                # Create a download button for the JSON file
-                st.download_button("Download Prediction File", json_string, "prediction.json", "application/json")
-            else:
-                st.write(json_content["content"])
-            if response.status_code == 422:
-                print(response.json())
+                if json_content["type"] == "json":
+                    # Convert JSON content to a string
+                    json_string = json.dumps(json_content, indent=2)
+                    # Create a download button for the JSON file
+                    st.download_button("Download Prediction File", json_string, "prediction.json", "application/json")
+                else:
+                    st.write(json_content["content"])
+                if response.status_code == 422:
+                    print(response.json())
+        else:
+            st.write("Please upload a file first.")
 
 
