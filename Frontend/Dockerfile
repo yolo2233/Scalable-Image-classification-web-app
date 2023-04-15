@@ -12,4 +12,4 @@ EXPOSE 8501
 
 ENTRYPOINT ["streamlit","run"]
 
-CMD ["app.py", "--server.maxUploadSize 500"]
+CMD ["app.py", "--server.maxUploadSize", "500"]
