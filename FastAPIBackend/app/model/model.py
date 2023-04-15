@@ -2,7 +2,7 @@ from torchvision import transforms
 import torch
 from PIL import Image
 from  torchvision.models import resnet18 
-from typing import List, Dict
+from typing import List, Dict, Tuple
 from fastapi import FastAPI, File, UploadFile
 import os
 
@@ -34,7 +34,7 @@ class ResNet18:
 
         return topk_indices_probs 
 
-    def __idx2label(self, topk_indices_probs: List[Dict]) -> List[Dict]:
+    def __idx2label(self, topk_indices_probs: List[Dict]) -> List[List[Tuple]]:
         current_file_dir = os.path.dirname(os.path.abspath(__file__))
 
         with open(current_file_dir+'/imagenet_classes.txt', 'r') as f:
@@ -46,6 +46,8 @@ class ResNet18:
             predicted_names_prob.append(name_prob)
 
         return predicted_names_prob
+    
+    
 
     def predict_pipeline(self, imgs) -> List[Dict]:
         pred_idx = self.__predict(imgs)
