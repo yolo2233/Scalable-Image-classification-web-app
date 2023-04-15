@@ -103,7 +103,7 @@ async def predict_batch(msg: FileName) -> ResponseModel:
     response_from_s3 = s3.list_objects_v2(Bucket="image-classification-app-store", Prefix=f"processed/{zip_file}/")
     print(response_from_s3, type(response_from_s3))
 
-    if "Contents" in response_from_s3:
+    if "Contents" in response_from_s3: 
         for item in response_from_s3['Contents']:
             image_ele = []
             image_key = item['Key']
