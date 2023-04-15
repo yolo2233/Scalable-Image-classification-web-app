@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from model.model import ResNet18
+from app.model.model import ResNet18
 from fastapi import FastAPI, File, UploadFile
 from typing import List
 import uvicorn
