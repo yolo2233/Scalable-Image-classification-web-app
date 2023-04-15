@@ -14,6 +14,7 @@ from typing import List, Union
 from fastapi.responses import JSONResponse
 from torchvision import transforms
 from io import BytesIO
+import os 
 
 app = FastAPI()
 
@@ -39,8 +40,8 @@ async def predict(images: List[UploadFile] = File(...)):
 
     return result
 
-ACCESS_KEY = "AKIAXALPLSRWKNMPGJWG"
-SECRET_KEY = "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"
+ACCESS_KEY = os.environ['ACCESS_KEY']
+SECRET_KEY = os.environ['SECRET_KEY']
 s3 = boto3.client("s3", aws_access_key_id=ACCESS_KEY, aws_secret_access_key=SECRET_KEY, region_name="eu-north-1")
 
 

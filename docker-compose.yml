@@ -2,7 +2,11 @@ version: '3.8'
 
 services:
   backend:
-    build: ./FastAPIBackend
+    build: 
+      context: ./FastAPIBackend
+      args:
+        ACCESS_KEY: ${ACCESS_KEY}
+        SECRET_KEY: ${SECRET_KEY}
     image: image-classification-app-back-end
     ports:
       - "80:80"

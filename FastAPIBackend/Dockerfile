@@ -1,6 +1,11 @@
 # base image 
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9  
 
+ARG ACCESS_KEY
+ARG SECRET_KEY
+ENV ACCESS_KEY=$ACCESS_KEY
+ENV SECRET_KEY=$SECRET_KEY
+
 WORKDIR /code 
 
 COPY ./requirements.txt /code/requirements.txt
@@ -16,5 +21,7 @@ COPY ./app /code/app
 
 # CMD takes a list of strings, each of these strings is what you would type in the command line separated by spaces.
 # This command will be run from the current working directory, the same /code directory you set above with WORKDIR /code.
+
+
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
