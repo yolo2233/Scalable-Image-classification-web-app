@@ -98,7 +98,7 @@ if uploaded_files:
 
     if st.button("Predict"):
         response = requests.post(
-            "http://localhost:80/predict/",
+            "http://backend:80/predict/",
             files=[("images", img.getvalue()) for img in image_bytes]
         )
     
@@ -116,7 +116,7 @@ if "upload_s3_clicked" not in st.session_state:
 if uploaded_file_s3:
     if st.button("Upload to AWS S3"):
         files = {"file": (uploaded_file_s3.name, uploaded_file_s3, uploaded_file_s3.type)}
-        response = requests.post("http://localhost:80/upload", files=files)
+        response = requests.post("http://backend:80/upload", files=files)
         if response.status_code == 200:
             st.write(f"File {uploaded_file_s3.name} uploaded successfully.")
         else:
@@ -130,7 +130,7 @@ if uploaded_file_s3:
 if st.session_state.upload_s3_clicked:
     if st.button("Batch predict"):
         with st.spinner(f"Predicting {uploaded_file_s3.name} ... "):
-            response = requests.post("http://localhost:80/predict-batch", json={"file_name": uploaded_file_s3.name})
+            response = requests.post("http://backend:80/predict-batch", json={"file_name": uploaded_file_s3.name})
 
             json_content = response.json()
 
