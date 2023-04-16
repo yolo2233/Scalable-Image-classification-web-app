@@ -112,6 +112,8 @@ uploaded_file_s3 = st.file_uploader("Upload zip files only", type="zip")
 if "upload_s3_clicked" not in st.session_state:
     st.session_state.upload_s3_clicked = False
 
+if "batch_predict_clicked" not in st.session_state:
+    st.session_state.batch_predict_clicked = False
 
 if uploaded_file_s3:
     if st.button("Upload to AWS S3"):
@@ -127,8 +129,9 @@ if uploaded_file_s3:
 
 
 
-if st.session_state.upload_s3_clicked:
-    if st.button("Batch predict"):
+if st.session_state.upload_s3_clicked and not st.session_state.batch_predict_clicked:
+    batch_predict_button = st.button("Batch predict")
+    if batch_predict_button:
         if uploaded_file_s3:
             with st.spinner(f"Predicting {uploaded_file_s3.name} ... "):
                 response = requests.post("http://backend:80/predict-batch", json={"file_name": uploaded_file_s3.name})
@@ -140,6 +143,8 @@ if st.session_state.upload_s3_clicked:
                     json_string = json.dumps(json_content, indent=2)
                     # Create a download button for the JSON file
                     st.download_button("Download Prediction File", json_string, "prediction.json", "application/json")
+                    st.session_state.upload_s3_clicked = False 
+                    st.session_state.batch_predict = True
                 else:
                     st.write(json_content["content"])
                 if response.status_code == 422:
