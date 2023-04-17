@@ -16,6 +16,8 @@ This image classification web application is developed for educational purposes 
   * AWS Glue
   * AWS S3
 
+## Model 
+The model used is a pre-trained ResNet18 model. The image preprocessing and prediction pipeline are initially implemented in a Jupyter notebook and later moved to the backend.
 
 
 ## System
@@ -24,10 +26,6 @@ The system divide its image prediction into two categories: small batch predicti
 ![](imgs/architecture-st2.png) 
 
 
-## Model 
-The model used is a pre-trained ResNet18 model. The image preprocessing and prediction pipeline are initially implemented in a Jupyter notebook and later moved to the backend.
-
- 
 ### Front-end
 #### Small batch prediction
 The front-end is developed using Streamlit, a Python library that allows building a user interface without the need for additional HTML/CSS/JavaScript knowledge. The front-end provides two input options for user: small batch prediction and large batch prediction. Users are allowed to upload the number of images no more than 9 at one time, for display purpose. The predicted results along with the uploaded images will be displayed in front-end.
